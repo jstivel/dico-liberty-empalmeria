@@ -146,6 +146,7 @@ marca = ["FICOTEL","CONDUMEX","HOME","FURUKAGUA","OFS","PLENUM"
             ]
 capacidad = ["12","24","48","96","144","288"
             ]
+tipo = ["NUEVO","SANGRIA","CAJA OB"]
 
 if hoja_seleccionada == "REPORTE EMPALMERIA":
     st.subheader("Reporte Empalmería")
@@ -174,21 +175,44 @@ if hoja_seleccionada == "REPORTE EMPALMERIA":
 
     with st.form("formulario_empalmes"):
         st.text_input("# EMPALME:", key="num_empalme_current", value=current_empalme.get('num_empalme', ''))
-        st.text_input("TIPO:", key="tipo_current", value=current_empalme.get('tipo', ''))
+
+        #st.text_input("TIPO:", key="tipo_current", value=current_empalme.get('tipo', ''))
+        st.selectbox("TIPO:", tipo, key="tipo_current",
+             index=tipo.index(current_empalme['tipo']) if current_empalme.get('tipo') in tipo else 0)
+
+        
+
+        
         st.text_input("DIRECCIÓN EMPALME:", key="direccion_empalme_current", value=current_empalme.get('direccion_empalme', ''))
         st.write("**CABLE IN**")
         cols_in = st.columns(2)
         cols_in[0].text_input("# INVENTARIO IN:", key="num_inventario_in_current", value=current_empalme.get('num_inventario_in', ''))
-        cols_in[1].text_input("MARCA IN:", key="marca_in_current", value=current_empalme.get('marca_in', ''))
-        cols_in[0].text_input("CAPACIDAD IN:", key="capacidad_in_current", value=current_empalme.get('capacidad_in', ''))
+        #cols_in[1].text_input("MARCA IN:", key="marca_in_current", value=current_empalme.get('marca_in', ''))
+        cols_in[1].selectbox("MARCA OUT:", marca, key="marca_in_current", 
+                      index=marca.index(current_empalme['marca_in']) if current_empalme.get('marca_in') in marca else 0)
+        #cols_in[0].text_input("CAPACIDAD IN:", key="capacidad_in_current", value=current_empalme.get('capacidad_in', ''))
+        cols_in[0].selectbox("CAPACIDAD IN:", capacidad, key="capacidad_in_current", 
+                      index=marca.index(current_empalme['capacidad_in']) if current_empalme.get('capacidad_in') in capacidad else 0)
+        
         cols_in[1].text_input("HILOS IN:", key="hilos_in_current", value=current_empalme.get('hilos_in', ''))
         st.write("**CABLE OUT**")
         cols_out = st.columns(2)
         cols_out[0].text_input("# INVENTARIO OUT:", key="num_inventario_out_current", value=current_empalme.get('num_inventario_out', ''))
         #cols_out[1].text_input("MARCA OUT:", key="marca_out_current", value=current_empalme.get('marca_out', ''))
-        cols_out[0].text_input("CAPACIDAD OUT:", key="capacidad_out_current", value=current_empalme.get('capacidad_out', ''))
+        cols_out[1].selectbox("MARCA OUT:", marca, key="marca_out_current", 
+                      index=marca.index(current_empalme['marca_out']) if current_empalme.get('marca_out') in marca else 0)
+
+        #cols_out[0].text_input("CAPACIDAD OUT:", key="capacidad_out_current", value=current_empalme.get('capacidad_out', ''))
+        cols_out[0].selectbox("CAPACIDAD OUT:", capacidad, key="capacidad_out_current", 
+                      index=marca.index(current_empalme['capacidad_out']) if current_empalme.get('capacidad_out') in capacidad else 0)
+
         cols_out[1].text_input("HILOS OUT:", key="hilos_out_current", value=current_empalme.get('hilos_out', ''))
-        st.text_input("DISTANCIA:", key="distancia_current", value=current_empalme.get('distancia', ''))
+        #st.text_input("DISTANCIA:", key="distancia_current", value=current_empalme.get('distancia', ''))
+        st.number_input("DISTANCIA (m):",key="distancia_current",min_value=0,step=1,
+            value=int(current_empalme.get('distancia', 0)) if str(current_empalme.get('distancia', '')).isdigit() else 0,
+            format="%d"
+        )
+
         if st.form_submit_button("Guardar Empalme"):
             nuevo_empalme = {
                 'num_empalme': st.session_state.num_empalme_current, 'tipo': st.session_state.tipo_current,
