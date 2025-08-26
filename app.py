@@ -121,7 +121,7 @@ def diligenciar_hoja_material_consumido(libro, materiales_instalados):
 
 st.set_page_config(layout="wide")
 st.title("Formulario de Empalmería y Materiales")
-ruta_excel = 'formato1.xlsx'
+ruta_excel = 'FORMATO1.xlsx'
 
 # Inicializar estados de sesión
 if 'general_data' not in st.session_state:
